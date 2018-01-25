@@ -10,7 +10,7 @@ public interface ShopAuthMapDao {
 	 * 分页列出店铺下面的授权信息
 	 * 
 	 * @param shopId
-	 * @param beginIndex
+	 * @param  rowIndex
 	 * @param pageSize
 	 * @return
 	 */
@@ -44,9 +44,8 @@ public interface ShopAuthMapDao {
 	/**
 	 * 对某员工除权
 	 * 
-	 * @param employeeId
-	 * @param shopId
-	 * @return effectedNum
+	 * @param shopAuthId
+	 * @return
 	 */
 	int deleteShopAuthMap(long shopAuthId);
 
