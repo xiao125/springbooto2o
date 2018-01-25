@@ -93,7 +93,7 @@ public class UserAwardMapDaoTest {
         assertEquals(2,count);
         //测试queryUserAwardMapById
         userAwardMap = userAwardMapDao.queryUserAwardMapById(userAwardMapList.get(0).getUserAwardId());
-        assertEquals("我的奖品",userAwardMap.getAward().getAwardName());
+        assertEquals("测试",userAwardMap.getAward().getAwardName());
 
 
     }
@@ -102,9 +102,19 @@ public class UserAwardMapDaoTest {
      * 测试更新功能
      * @throws Exception
      */
+    @Test
     public void testCUpdateUserAwardMap() throws Exception{
 
         UserAwardMap userAwardMap = new UserAwardMap();
+        PersonInfo customer = new PersonInfo();
+        //按用户名模糊查询
+        customer.setName("测试");
+        userAwardMap.setUser(customer);
+        List<UserAwardMap> userAwardMapList = userAwardMapDao.queryUserAwardMapList(userAwardMap,0,1);
+       assertEquals("Error, 积分不一致！", 0==userAwardMapList.get(0).getUsedStatus());
+        userAwardMapList.get(0).setUsedStatus(0);
+        int effecteNum = userAwardMapDao.updateUserAwardMap(userAwardMapList.get(0));
+        assertEquals(1,effecteNum);
 
     }
 
