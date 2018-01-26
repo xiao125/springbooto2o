@@ -10,7 +10,7 @@ public interface ProductSellDailyDao {
 	/**
 	 * 根据查询条件返回商品日销售的统计列表
 	 * 
-	 * @param userProductCondition
+	 * @param productSellDailyCondition
 	 * @param beginTime
 	 * @param endTime
 	 * @return

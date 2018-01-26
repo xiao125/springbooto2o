@@ -1,0 +1,3 @@
+2018-01-25 18:19:44.746 [main] INFO  com.imooc.o2o.dao.UserAwardMapDaoTest - Starting UserAwardMapDaoTest on 90F8LIXTP6FP86P with PID 9976 (started by Administrator in F:\ideaPreojects\o2o)
+2018-01-25 18:19:44.746 [main] INFO  com.imooc.o2o.dao.UserAwardMapDaoTest - No active profile set, falling back to default profiles: default
+2018-01-25 18:19:48.633 [main] INFO  com.imooc.o2o.dao.UserAwardMapDaoTest - Started UserAwardMapDaoTest in 4.244 seconds (JVM running for 6.019)
