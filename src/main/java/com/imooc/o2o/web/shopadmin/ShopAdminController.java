@@ -62,4 +62,14 @@ public class ShopAdminController {
     }
 
 
+    @RequestMapping(value = "/shopauthmanagement")
+    public String shopAuthManagement(){
+        //转发至店铺授权页面
+        return "shop/shopauthmanagement";
+    }
+
+
+
+
+
 }
