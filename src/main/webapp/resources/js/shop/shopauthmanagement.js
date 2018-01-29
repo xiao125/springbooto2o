@@ -60,7 +60,8 @@ $(function () {
      *
      */
 
-    $('.shopauth-wrap').on('click','a',function (e) {
+    $('.shopauth-wrap')
+        .on('click','a',function (e) {
 
         var target = $(e.currentTarget);
         if(target.hasClass('edit')){
