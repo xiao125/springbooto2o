@@ -69,6 +69,11 @@ public class ShopAdminController {
     }
 
 
+    @RequestMapping(value = "/shopauthedit")
+    public String shopAuthEdit(){
+        //转发至授权信息修改页面
+        return "shop/shopauthedit";
+    }
 
 
 

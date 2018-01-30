@@ -66,6 +66,7 @@ $(function () {
         var target = $(e.currentTarget);
         if(target.hasClass('edit')){
             window.location.href = '/o2oMaven/shopadmin/shopauthedit?shopAuthId='+e.currentTarget.dataset.authId;
+
         }else if(target.hasClass('status')){
 
             changeStatus(e.currentTarget.dataset.authId,e.currentTarget.dataset.status);

@@ -176,7 +176,7 @@ public class ShopAuthManagementController {
 
     }
 
-    @Value("${wechat.urlMiddle}")
+    @Value("${wechat.middle}")
     public void setUrlMiddle(String urlMiddle){
         ShopAuthManagementController.urlMiddle = urlMiddle;
 
@@ -257,7 +257,6 @@ public class ShopAuthManagementController {
             String qrCodeinfo = new String(URLDecoder.decode(HttpServletRequestUtil.getString(request,
                     "state"),"UTF-8"));
             ObjectMapper mapper = new ObjectMapper();
-
             WechatInfo wechatInfo = null;
             try {
                 // 将解码后的内容用aaa去替换掉之前生成二维码的时候加入的aaa前缀，转换成WechatInfo实体类
