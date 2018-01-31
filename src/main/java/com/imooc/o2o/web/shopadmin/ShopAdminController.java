@@ -75,6 +75,24 @@ public class ShopAdminController {
         return "shop/shopauthedit";
     }
 
+    @RequestMapping(value = "/operationsuccess",method = RequestMethod.GET)
+    private String operationSuccess(){
+
+        //转发至操作失败页面
+        return "shop/operationsuccess";
+
+    }
+
+
+    @RequestMapping(value = "/operationfail",method = RequestMethod.GET)
+    private String operationFail(){
+        //转发至操作成功的页面
+        return "shop/operationfail";
+
+    }
+
+
+
 
 
 }

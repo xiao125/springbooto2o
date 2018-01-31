@@ -1,9 +1,11 @@
 package com.imooc.o2o.service.impl;
 
+import com.imooc.o2o.dao.ShopAuthMapDao;
 import com.imooc.o2o.dao.ShopDao;
 import com.imooc.o2o.dto.ImageHolder;
 import com.imooc.o2o.dto.ShopExecution;
 import com.imooc.o2o.entity.Shop;
+import com.imooc.o2o.entity.ShopAuthMap;
 import com.imooc.o2o.enums.ShopStateEnum;
 import com.imooc.o2o.exceptions.ShopOperationException;
 import com.imooc.o2o.service.ShopService;
@@ -27,6 +29,10 @@ public class ShopServiceImpl implements ShopService{
     @Autowired
     private ShopDao shopDao;
 
+    @Autowired
+    private ShopAuthMapDao shopAuthMapDao;
+
+    @Override
     public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) {
 
         //将页码转换成行码
@@ -55,6 +61,8 @@ public class ShopServiceImpl implements ShopService{
      * @return
      * @throws ShopOperationException
      */
+
+    @Override
     public ShopExecution addShop(Shop shop, ImageHolder thumbnail) throws ShopOperationException {
 
         // 空值判断
@@ -83,7 +91,8 @@ public class ShopServiceImpl implements ShopService{
 
                   }catch (Exception e){
 
-                      throw new ShopOperationException("addShopImg error:" + e.getMessage()); //使用RuntimeException 数据库可以事务回滚
+                      //使用RuntimeException 数据库可以事务回滚
+                      throw new ShopOperationException("addShopImg error:" + e.getMessage());
                   }
 
                   // 更新店铺的图片地址
@@ -92,8 +101,24 @@ public class ShopServiceImpl implements ShopService{
                       throw new ShopOperationException("更新图片地址失败");
                   }
 
+                  //执行增加shopAuthMap操作
+                  ShopAuthMap shopAuthMap = new ShopAuthMap();
+                  shopAuthMap.setEmployee(shop.getOwner());
+                  shopAuthMap.setShop(shop);
+                  shopAuthMap.setTitle("店家");
+                  shopAuthMap.setTitleFlag(0);
+                  shopAuthMap.setCreateTime(new Date());
+                  shopAuthMap.setLastEditTime(new Date());
+                  shopAuthMap.setEnableStatus(1);
+                  try{
+                      effectedNum = shopAuthMapDao.insertShopAuthMap(shopAuthMap);
+                      if (effectedNum <=0){
+                          throw new ShopOperationException("授权创建失败");
+                      }
+                  }catch (Exception e){
+                      throw new ShopOperationException("insertShopAuthMap error:" +e.getMessage());
+                  }
               }
-
           }
 
         }catch (Exception e){
@@ -103,10 +128,10 @@ public class ShopServiceImpl implements ShopService{
         return new ShopExecution(ShopStateEnum.CHECK,shop);
     }
 
-
+    @Override
     public ShopExecution modifyShop(Shop shop, ImageHolder thumbnail) throws ShopOperationException {
 
-        if (shop ==null && shop.getShopId() == null){
+        if (shop ==null || shop.getShopId() == null){
 
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
 
@@ -115,7 +140,8 @@ public class ShopServiceImpl implements ShopService{
             // 1.判断是否需要处理图片
 
             try {
-                if (thumbnail.getImage() !=null && thumbnail.getImageName() !=null && !"".equals(thumbnail.getImageName())){
+                if (thumbnail.getImage() !=null && thumbnail.getImageName() !=null
+                        && !"".equals(thumbnail.getImageName())){
 
                     Shop tempShop = shopDao.queryByShopId(shop.getShopId());
                     if (tempShop.getShopImg() !=null){
@@ -146,6 +172,8 @@ public class ShopServiceImpl implements ShopService{
 
     }
 
+
+    @Override
     public Shop getByShopId(Long shopId) {
 
         return shopDao.queryByShopId(shopId);
