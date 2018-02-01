@@ -1,5 +1,6 @@
 package com.imooc.o2o.service;
 
+import com.imooc.o2o.dto.AreaExecution;
 import com.imooc.o2o.entity.Area;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public interface AreaService {
      * @return
      */
     List<Area> getAreaList();
+
+
+
+
 }

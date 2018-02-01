@@ -39,6 +39,7 @@ public class SessionFactoryConfiguration {
     @Value("${type_alias_package}")
     private String typeAliasPackage;
 
+
     @Autowired
     private DataSource dataSource;
 

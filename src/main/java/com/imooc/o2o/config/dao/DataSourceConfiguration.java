@@ -5,6 +5,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 
 import java.beans.PropertyVetoException;
@@ -12,11 +13,12 @@ import java.beans.PropertyVetoException;
 /**
  *
  * 配置datasource到ioc容器里面
+ * @Configuration 可理解为用spring的时候xml里面的<beans>标签
+ * @Bean  可理解为用spring的时候xml里面的<bean>标签
  */
-
-@Controller
-@MapperScan("com.imooc.o2o.dao")
 //配置mybatis mapper的扫描路径
+@Configuration
+@MapperScan("com.imooc.o2o.dao")
 public class DataSourceConfiguration {
 
     @Value("${jdbc.driver}")
@@ -38,13 +40,14 @@ public class DataSourceConfiguration {
      * @throws PropertyVetoException
      */
     @Bean(name = "dataSource")
-    public ComboPooledDataSource createDataSoure() throws PropertyVetoException {
+    public ComboPooledDataSource createDataSource() throws PropertyVetoException {
 
         //生成dataSource实例
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
+        // 跟配置文件一样设置以下信息
         //驱动
         dataSource.setDriverClass(jdbcDriver);
-        //数据库
+        //数据库连接URL
         dataSource.setJdbcUrl(jdbcUrl);
         //设置用户名
         dataSource.setUser(DESUtil.getDecryptString(jdbcUsername));

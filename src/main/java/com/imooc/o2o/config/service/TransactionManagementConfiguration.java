@@ -1,6 +1,7 @@
 package com.imooc.o2o.config.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Controller;
@@ -15,16 +16,15 @@ import javax.sql.DataSource;
  * 继承TransactionManagementConfigurer是因为开启annotation-driven
  */
 
-
-@Configuration
 // 首先使用注解 @EnableTransactionManagement 开启事务支持后
 // 在Service方法上添加注解 @Transactional 便可
+@Configuration
 @EnableTransactionManagement
 public class TransactionManagementConfiguration implements TransactionManagementConfigurer {
 
-
-    @Autowired
     // 注入DataSourceConfiguration里边的dataSource,通过createDataSource()获取
+    @Autowired
+    @Qualifier("dataSource")
     private DataSource dataSource;
 
     @Override

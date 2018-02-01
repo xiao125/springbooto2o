@@ -28,9 +28,10 @@ public class AreaController {
     private AreaService areaService;
 
 
-
-
-
+    /**
+     * 获取所有的区域信息
+     * @return
+     */
     @RequestMapping(value = "/listarea",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> listArea(){
@@ -41,6 +42,7 @@ public class AreaController {
         List<Area> list = new ArrayList<Area>();
 
         try {
+            //获取区域列表
             list = areaService.getAreaList();
             modelmap.put("rows",list);
             modelmap.put("total",list.size());
@@ -54,11 +56,9 @@ public class AreaController {
 
         logger.error("test error!");
         long endTime = System.currentTimeMillis();
-        logger.debug("costTime:[{}ms]",endTime-startTime);
+        logger.debug("costTime:[{}ms]",endTime - startTime);
         logger.info("===end====");
-     return modelmap;
-
-
+        return modelmap;
     }
 
 }
