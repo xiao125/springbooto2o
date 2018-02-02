@@ -96,7 +96,7 @@ public class AreaServiceImpl implements AreaService {
         return areaList;
     }
 
-   /* @Override
+    @Override
     public AreaExecution addArea(Area area) {
 
         //空值判断，主要判断areaName不为空
@@ -144,7 +144,7 @@ public class AreaServiceImpl implements AreaService {
             return new AreaExecution(AreaStateEnum.EMPTY);
         }
     }
-*/
+
 
     /**
      * 移除跟实体类相关的redis key-value
