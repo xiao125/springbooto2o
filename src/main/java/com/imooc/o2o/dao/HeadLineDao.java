@@ -55,7 +55,7 @@ public interface HeadLineDao {
 	int deleteHeadLine(long headLineId);
 
 	/**
-	 * 
+	 * 批量删除头条
 	 * @param lineIdList
 	 * @return
 	 */

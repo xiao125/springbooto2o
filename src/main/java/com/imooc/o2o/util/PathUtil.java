@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class PathUtil {
+	//文件分隔符（在 UNIX 系统中是“/”)
 	private static String seperator = System.getProperty("file.separator");
 
 	private static String winPath;

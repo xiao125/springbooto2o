@@ -31,7 +31,6 @@ public class ShopPermissionInterceptor  extends HandlerInterceptorAdapter {
         @SuppressWarnings("unchecked")
         List<Shop> shopList = (List<Shop>) request.getSession().getAttribute("shopList");
 
-
         if (currentShop !=null && shopList !=null){
             for (Shop shop : shopList){
                 //如果当前店铺在可操作的列表里返回true，进行接下来的用户操作

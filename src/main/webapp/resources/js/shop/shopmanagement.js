@@ -11,7 +11,7 @@ $(function() {
 
 			//商铺信息页面
 			$('#shopInfo')
-					.attr('href','/o2oMaven/shopadmin/shopoperation?shopId=' + shopId);//店铺注册编辑界面
+				.attr('href','/o2oMaven/shopadmin/shopoperation?shopId=' + shopId);//店铺注册编辑界面
 		}
 	});
 });
