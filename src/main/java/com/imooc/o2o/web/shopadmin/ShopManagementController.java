@@ -52,7 +52,7 @@ public class ShopManagementController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "getshopmanagementinfo",method = RequestMethod.GET)
+    @RequestMapping(value = "/getshopmanagementinfo",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getShopManagementInfo(HttpServletRequest request){
 
@@ -116,11 +116,12 @@ public class ShopManagementController {
 
 
 
-    @RequestMapping(value = "getshopbyid",method = RequestMethod.GET)
+    @RequestMapping(value = "/getshopbyid",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getShopById(HttpServletRequest request){
         Map<String,Object> modelMap = new HashMap<String, Object>();
         Long shopId = HttpServletRequestUtil.getLong(request,"shopId");
+        System.out.println("获取的shopId="+shopId);
         if (shopId > -1){
 
             try{

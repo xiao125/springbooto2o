@@ -8,7 +8,7 @@ $(function () {
     var shopAuthPostUrl = '/o2oMaven/shopadmin/modifyshopauthmap';
 
     if(shopAuthId){
-        getInfo()
+        getInfo(shopAuthId)
     }else {
 
         $.toast('用户不存在');

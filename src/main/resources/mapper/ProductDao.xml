@@ -109,7 +109,7 @@
 
             <if test="productCondition.enableStatus">
 
-                and product_name = #{productCondition.enableStatus}
+                and enable_status = #{productCondition.enableStatus}
 
             </if>
 

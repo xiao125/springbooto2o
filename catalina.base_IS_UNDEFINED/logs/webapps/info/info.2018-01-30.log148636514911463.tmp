@@ -1,0 +1,3 @@
+2018-01-30 22:36:06.786 [main] INFO  com.imooc.o2o.O2oApplication - Starting O2oApplication on PC2014101864 with PID 11128 (F:\IdeaProjects\o2o\target\classes started by Administrator in F:\IdeaProjects\o2o)
+2018-01-30 22:36:06.856 [main] INFO  com.imooc.o2o.O2oApplication - No active profile set, falling back to default profiles: default
+2018-01-30 22:36:23.512 [main] INFO  com.imooc.o2o.O2oApplication - Started O2oApplication in 21.238 seconds (JVM running for 24.317)

@@ -37,7 +37,7 @@ public class CodeUtil {
     /**
      * 生成二维码的图片流
      *
-     * @param url
+     * @param content
      * @param resp
      * @return
      */

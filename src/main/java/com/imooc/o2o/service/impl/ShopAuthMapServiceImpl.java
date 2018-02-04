@@ -9,6 +9,7 @@ import com.imooc.o2o.service.ShopAuthMapService;
 import com.imooc.o2o.util.PageCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -47,6 +48,7 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
     }
 
     @Override
+    @Transactional
     public ShopAuthMapExecution addShopAuthMap(ShopAuthMap shopAuthMap) throws ShopAuthMapOperationException {
 
         //空值判断，主要是对店铺Id和员工Id做效验
@@ -56,6 +58,7 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
             shopAuthMap.setCreateTime(new Date());
             shopAuthMap.setLastEditTime(new Date());
             shopAuthMap.setEnableStatus(1);
+            shopAuthMap.setTitleFlag(0);
 
             try{
                 //添加授权信息
@@ -75,6 +78,7 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
     }
 
     @Override
+    @Transactional
     public ShopAuthMapExecution modifyShopAuthMap(ShopAuthMap shopAuthMap) throws ShopAuthMapOperationException {
 
         // 空值判断，主要是对授权Id做校验
