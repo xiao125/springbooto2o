@@ -75,7 +75,7 @@ public class ShopCategoryController {
 				request.getSession().getServletContext());
 		try {
 			shopCategory = mapper.readValue(shopCategoryStr, ShopCategory.class);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			modelMap.put("success", false);
 			modelMap.put("errMsg", e.toString());
 			return modelMap;

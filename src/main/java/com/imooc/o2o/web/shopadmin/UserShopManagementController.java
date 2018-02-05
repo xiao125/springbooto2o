@@ -29,14 +29,6 @@ public class UserShopManagementController {
     @Autowired
     private UserShopMapService userShopMapService;
 
-    @Autowired
-    private ProductSellDailyService productSellDailyService;
-
-    @Autowired
-    private WechatAuthService wechatAuthService;
-
-    @Autowired
-    private ProductService productService;
 
     @RequestMapping(value = "/listusershopmapbyshop",method = RequestMethod.GET)
     @ResponseBody
@@ -72,28 +64,5 @@ public class UserShopManagementController {
         return modelMap;
 
     }
-
-
-    @RequestMapping(value = "/listproductselldailyinfobyshop",method = RequestMethod.GET)
-    @ResponseBody
-    private Map<String,Object> listProductSellDailyInfobyShop(HttpServletRequest request) throws ParseException {
-
-        Map<String, Object> modelMap = new HashMap<>();
-        //获取当前的店铺信息
-        Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
-        //空值效验，主要确保shopId不为空
-        if ((currentShop != null) && (currentShop.getShopId() != null)) {
-            //添加查询条件
-            ProductSellDaily productSellDaily = new ProductSellDaily();
-            productSellDaily.setShop(currentShop);
-            Calendar calendar = Calendar.getInstance();
-        }
-
-        return modelMap;
-
-    }
-
-
-
 
 }
