@@ -6,10 +6,7 @@ import com.imooc.o2o.entity.PersonInfo;
 import com.imooc.o2o.entity.ProductSellDaily;
 import com.imooc.o2o.entity.Shop;
 import com.imooc.o2o.entity.UserShopMap;
-import com.imooc.o2o.service.ProductSellDailyService;
-import com.imooc.o2o.service.ProductService;
-import com.imooc.o2o.service.UserShopMapService;
-import com.imooc.o2o.service.WechatAuthService;
+import com.imooc.o2o.service.*;
 import com.imooc.o2o.util.HttpServletRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +25,11 @@ public class UserShopManagementController {
     private UserShopMapService userShopMapService;
 
 
+    /**
+     * 获取某个店铺的用户积分信息
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/listusershopmapbyshop",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> listUserShopMapByShop(HttpServletRequest request){
@@ -37,12 +37,12 @@ public class UserShopManagementController {
         //获取分页信息
         int pageIndex = HttpServletRequestUtil.getInt(request,"pageIndex");
         int pageSize = HttpServletRequestUtil.getInt(request,"pageSize");
-        //从session中获取当前店铺的信息
+        // 从session中获取当前店铺的信息
         Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
-        //空值判断
+        //空值判断,主要确保shopId不为空
         if ((pageIndex > -1) && (pageSize >-1) && (currentShop !=null) && (currentShop.getShopId() !=null)){
             UserShopMap userShopMapCondition = new UserShopMap();
-            //传入查询条件
+            // 传入查询条件
             userShopMapCondition.setShop(currentShop);
             String userName = HttpServletRequestUtil.getString(request,"userName");
             if (userName !=null){

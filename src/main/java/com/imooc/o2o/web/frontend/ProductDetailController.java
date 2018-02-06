@@ -21,6 +21,13 @@ public class ProductDetailController {
     @Autowired
     private ProductService productService;
 
+
+    /**
+     * 根据商品Id获取商品详情
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/listproductdetailpageinfo",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> listProductDetailPageInfo(HttpServletRequest request){

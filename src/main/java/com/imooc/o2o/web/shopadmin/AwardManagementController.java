@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
@@ -104,7 +103,7 @@ public class AwardManagementController {
             return modelMap;
         }
 
-        //// 接收前端参数的变量的初始化，包括奖品，缩略图
+        // 接收前端参数的变量的初始化，包括奖品，缩略图
         ObjectMapper mapper = new ObjectMapper();
         Award award = null;
         String awardStr = HttpServletRequestUtil.getString(request,"awardStr");
@@ -159,9 +158,74 @@ public class AwardManagementController {
            modelMap.put("errMsg", "请输入商品信息");
        }
         return modelMap;
+    }
 
 
+    @RequestMapping(value = "/modifyaward",method = RequestMethod.POST)
+    @ResponseBody
+    private Map<String,Object> modifyAward(HttpServletRequest request){
 
+        boolean statusChange = HttpServletRequestUtil.getBoolean(request,"statusChange");
+        Map<String,Object> modelMap = new HashMap<>();
+        //根据传入的状态值决定是否跳过验证码校验
+        if (!statusChange && !CodeUtil.checkVerifyCode(request)){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", "输入了错误的验证码");
+            return modelMap;
+        }
+        //接收前端参数的变了的初始化，包括商品，缩略图
+        ObjectMapper mapper = new ObjectMapper();
+        Award award = null;
+        ImageHolder thumnbnail = null;
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+                request.getSession().getServletContext());
+        // 咱们的请求中都带有multi字样，因此没法过滤，只是用来拦截外部非图片流的处理，
+        // 里边有缩略图的空值判断，请放心使用
+        try{
+            if (multipartResolver.isMultipart(request)){
+                thumnbnail = handleImage(request,thumnbnail);
+            }
+        }catch (Exception e){
+            modelMap.put("success",false);
+            modelMap.put("errMsg",e.toString());
+            return modelMap;
+        }
+
+        try{
+            String awardStr = HttpServletRequestUtil.getString(request,"awardStr");
+            //尝试获取前端传过来的表单string流并将其转换成Product实体类
+            award = mapper.readValue(awardStr,Award.class);
+        }catch (Exception e){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", e.toString());
+            return modelMap;
+
+        }
+
+        //空值判断
+        if (award !=null){
+            try{
+                // 从session中获取当前店铺的Id并赋值给award，减少对前端数据的依赖
+                Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
+                award.setShopId(currentShop.getShopId());
+                AwardExecution pe = awardService.modifyAward(award,thumnbnail);
+                if (pe.getState() == AwardStateEnum.SUCCESS.getState()){
+                    modelMap.put("success",true);
+                }else {
+                    modelMap.put("success", false);
+                    modelMap.put("errMsg", pe.getStateInfo());
+                }
+
+            }catch (RuntimeException e){
+                modelMap.put("success", false);
+                modelMap.put("errMsg", e.toString());
+                return modelMap;
+            }
+        }else {
+            modelMap.put("success", false);
+            modelMap.put("errMsg", "请输入商品信息");
+        }
+        return modelMap;
 
     }
 
