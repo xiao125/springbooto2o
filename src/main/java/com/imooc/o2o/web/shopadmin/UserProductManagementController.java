@@ -1,5 +1,7 @@
 package com.imooc.o2o.web.shopadmin;
 
+import com.imooc.o2o.dto.EchartSeries;
+import com.imooc.o2o.dto.EchartXAxis;
 import com.imooc.o2o.dto.UserProductMapExecution;
 import com.imooc.o2o.entity.Product;
 import com.imooc.o2o.entity.ProductSellDaily;
@@ -19,10 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.management.ObjectName;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/shopadmin")
@@ -103,12 +103,63 @@ public class UserProductManagementController {
             Date beginTime = calendar.getTime();
 
             //根据传入的查询条件获取该店铺的商品销量情况
+            List<ProductSellDaily> productSellDailyList = productSellDailyService
+                    .listProductSellDaily(productSellDailyCondition,beginTime,endTime);
 
-
-
-
-
-
+            //指定日期格式
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            //商品名列表，保证唯一性
+            HashSet<String> legendData = new HashSet<>();
+            //x轴数据
+            HashSet<String> xData = new HashSet<>();
+            //定义series
+            List<EchartSeries> series = new ArrayList<>();
+            //日销量列表
+            List<Integer> totalList = new ArrayList<>();
+            //当前商品名，默认为空
+            String currentProductName ="";
+            for (int i=0;i<productSellDailyList.size();i++){
+                ProductSellDaily productSellDaily = productSellDailyList.get(i);
+                //自动去重
+                legendData.add(productSellDaily.getProduct().getProductName());
+                xData.add(sdf.format(productSellDaily.getCreateTime()));
+                if (!currentProductName.equals(productSellDaily.getProduct().getProductName())
+                        && !currentProductName.isEmpty()){
+                    // 如果currentProductName不等于获取的商品名，或者已遍历到列表的末尾，且currentProductName不为空，
+                    // 则是遍历到下一个商品的日销量信息了, 将前一轮遍历的信息放入series当中，
+                    // 包括了商品名以及与商品对应的统计日期以及当日销量
+                    EchartSeries es = new EchartSeries();
+                    es.setName(currentProductName);
+                    es.setData(totalList.subList(0,totalList.size()));
+                    series.add(es);
+                    //重置totalList
+                    totalList = new ArrayList<>();
+                    //变换下currentProductId为当前的productId
+                    currentProductName = productSellDaily.getProduct().getProductName();
+                    //继续添加新的值
+                    totalList.add(productSellDaily.getTotal());
+                }else {
+                    //如果还是当前的productId则继续添加新值
+                    totalList.add(productSellDaily.getTotal());
+                    currentProductName = productSellDaily.getProduct().getProductName();
+                }
+                // 队列之末，需要将最后的一个商品销量信息也添加上
+                if (i == productSellDailyList.size() -1){
+                    EchartSeries es = new EchartSeries();
+                    es.setName(currentProductName);
+                    es.setData(totalList.subList(0,totalList.size()));
+                    series.add(es);
+                }
+            }
+            modelMap.put("series",series);
+            modelMap.put("legendData",legendData);
+            //拼接出xAxis
+            List<EchartXAxis> xAxes = new ArrayList<>();
+            EchartXAxis exa = new EchartXAxis();
+            exa.setData(xData);
+            xAxes.add(exa);
+            modelMap.put("xAxis",xAxes);
+            modelMap.put("success",true);
 
            }else {
 
