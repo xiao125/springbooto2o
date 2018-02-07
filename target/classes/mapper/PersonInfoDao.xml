@@ -20,11 +20,11 @@
             <!-- 写like语句的时候 一般都会写成 like '% %' 在mybatis里面写就是应该是 like '%${name} %' 而不是
 				'%#{name} %' ${name} 是不带单引号的，而#{name} 是带单引号的 -->
             <if test="personInfoCondition.name !=null">
-                AND name LIKE  '%${personInfoCondition.name}%'
+                and name like  '%${personInfoCondition.name}%'
 
             </if>
-            <if test="personInfoCondition.enableStatus !=null">
-                AND enable_status = #{personInfoCondition.enableStatus}
+            <if test="personInfoCondition.enableStatus != null">
+                and enable_status = #{personInfoCondition.enableStatus}
             </if>
         </where>
         ORDER BY

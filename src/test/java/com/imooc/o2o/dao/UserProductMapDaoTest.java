@@ -108,7 +108,7 @@ public class UserProductMapDaoTest {
         List<UserProductMap> userProductMapList = userProductMapDao.queryUserProductMapList(userProductMap,0,2);
         assertEquals(2,userProductMapList.size());
         int count = userProductMapDao.queryUserProductMapCount(userProductMap);
-        assertEquals(4,count);
+        assertEquals(8,count);
         //叠加店铺去查询
         Shop shop = new Shop();
         shop.setShopId(29L);
@@ -116,7 +116,7 @@ public class UserProductMapDaoTest {
         userProductMapList = userProductMapDao.queryUserProductMapList(userProductMap,0,3);
         assertEquals(3,userProductMapList.size());
         count = userProductMapDao.queryUserProductMapCount(userProductMap);
-        assertEquals(3,count);
+        assertEquals(6,count);
 
 
     }

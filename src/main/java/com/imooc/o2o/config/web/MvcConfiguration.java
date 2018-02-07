@@ -45,7 +45,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         super.addResourceHandlers(registry);
         //registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-        registry.addResourceHandler("/upload/**").addResourceLocations("F:/IdeaProjects/img/upload/");
+        registry.addResourceHandler("/upload/**").addResourceLocations("file:F:/IdeaProjects/img/upload/");
 
     }
 
@@ -154,6 +154,9 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
          * shopauthmanagement page
          */
         loginIR.excludePathPatterns("/shopadmin/addshopauthmap");
+        /** scan **/
+        loginIR.excludePathPatterns("/shopadmin/adduserproductmap");
+        loginIR.excludePathPatterns("/shopadmin/exchangeaward");
 
         // 还可以注册其它的拦截器
         InterceptorRegistration permissionIR = registry.addInterceptor(new ShopPermissionInterceptor());
@@ -171,6 +174,9 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter implements Applica
         /** shopmanage page **/
         permissionIR.excludePathPatterns("/shopadmin/shopmanagement");
         permissionIR.excludePathPatterns("/shopadmin/getshopmanagementinfo");
+        /** scan **/
+        permissionIR.excludePathPatterns("/shopadmin/adduserproductmap");
+        permissionIR.excludePathPatterns("/shopadmin/exchangeaward");
 
         /** shopauthmanagement page   微信回传回来的参数添加店铺的授权信息**/
         permissionIR.excludePathPatterns("/shopadmin/addshopauthmap");

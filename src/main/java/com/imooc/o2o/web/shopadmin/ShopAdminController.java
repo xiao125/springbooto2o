@@ -91,6 +91,13 @@ public class ShopAdminController {
 
     }
 
+    @RequestMapping(value = "/productbuycheck",method = RequestMethod.GET)
+    private String productBuyCheck(){
+        //转发至店铺的消费记录的页面
+        System.out.println("店铺的消费记录的页面");
+        return "shop/productbuycheck";
+
+    }
 
 
 

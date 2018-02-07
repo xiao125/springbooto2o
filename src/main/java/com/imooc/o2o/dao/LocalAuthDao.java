@@ -35,7 +35,7 @@ public interface LocalAuthDao {
 	/**
 	 * 通过userId,username,password更改密码
 	 * 
-	 * @param localAuth
+	 * @param
 	 * @return
 	 */
 	int updateLocalAuth(@Param("userId") Long userId, @Param("username") String username,

@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ *店铺管理
  */
 @Controller
 @RequestMapping("/shopadmin")
@@ -71,33 +71,31 @@ public class ShopManagementController {
                 modelMap.put("shopId",currentShop.getShopId());
             }
         }else {
-
             Shop currentShop = new Shop();
             currentShop.setShopId(shopId);
             request.getSession().setAttribute("currentShop",currentShop);
             modelMap.put("redirect",false);
         }
-
         return modelMap;
     }
 
 
-
+    /**
+     * 查询店铺列表
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/getshoplist",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getShopList(HttpServletRequest request){
 
         Map<String,Object> modelMap = new HashMap<String, Object>();
-        PersonInfo user = new PersonInfo();
-        user.setUserId(1L); // Userid为1的商铺
-        user.setName("V_V_Shyer");
-        request.getSession().setAttribute("user",user);
-        user = (PersonInfo) request.getSession().getAttribute("user");
-
+        PersonInfo user = (PersonInfo) request.getSession().getAttribute("user");
         try {
 
             Shop shopCondition = new Shop();
             shopCondition.setOwner(user);
+            //查询店铺列表
             ShopExecution se = shopService.getShopList(shopCondition,0,100);
             modelMap.put("shopList",se.getShopList());
             modelMap.put("user",user);
@@ -113,17 +111,18 @@ public class ShopManagementController {
     }
 
 
-
-
-
-    @RequestMapping(value = "/getshopbyid",method = RequestMethod.GET)
+    /**
+     * 根据shopId查询店铺信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getshopbyid",method = RequestMethod.POST)
     @ResponseBody
     private Map<String,Object> getShopById(HttpServletRequest request){
         Map<String,Object> modelMap = new HashMap<String, Object>();
         Long shopId = HttpServletRequestUtil.getLong(request,"shopId");
         System.out.println("获取的shopId="+shopId);
         if (shopId > -1){
-
             try{
                 Shop shop = shopService.getByShopId(shopId); //获取商铺信息
                 List<Area> areaList = areaService.getAreaList(); //获取区域列表
@@ -131,10 +130,8 @@ public class ShopManagementController {
                 modelMap.put("areaList",areaList);
                 modelMap.put("success",true);
             }catch (Exception e){
-
                 modelMap.put("success",false);
                 modelMap.put("errMsg",e.toString());
-
             }
         }else {
             modelMap.put("success",false);
@@ -226,26 +223,19 @@ public class ShopManagementController {
             PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
             shop.setOwner(owner);
             ShopExecution se; //返回结果状态
-
             try {
-
                 ImageHolder imageHolder = new ImageHolder(shopImg.getOriginalFilename(),shopImg.getInputStream());
                 se = shopService.addShop(shop,imageHolder);
-
                 if (se.getState() == ShopStateEnum.CHECK.getState()){
                     modelMap.put("success",true);
-
                     // 该用户可以操作的店铺列表
                     @SuppressWarnings("unchecked")
                    List<Shop> shopList = (List<Shop>) request.getSession().getAttribute("shopList");
                     if (shopList ==null || shopList.size() ==0){ //如果是第一次，就创建
                         shopList = new ArrayList<Shop>();
-
                     }
-
                     shopList.add(se.getShop());
                     request.getSession().setAttribute("shopList",shopList);
-
                 }else {
 
                     modelMap.put("success",false);
@@ -261,7 +251,6 @@ public class ShopManagementController {
                 modelMap.put("success",false);
                 modelMap.put("errMsg",e.getMessage());
             }
-
             return modelMap;
         }else {
             modelMap.put("success",false);
@@ -277,7 +266,6 @@ public class ShopManagementController {
     private Map<String,Object> modifyShop(HttpServletRequest request){
 
         Map<String,Object> modelMap = new HashMap<String, Object>();
-
         //检查验证码是否正确
         if (!CodeUtil.checkVerifyCode(request)){
             modelMap.put("success",false);

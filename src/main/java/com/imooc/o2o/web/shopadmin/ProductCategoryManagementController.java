@@ -124,10 +124,8 @@ public class ProductCategoryManagementController {
 
                 modelMap.put("success", false);
                 modelMap.put("errMsg", e.toString());
-
                 return modelMap;
             }
-
         } else {
 
             modelMap.put("success", false);

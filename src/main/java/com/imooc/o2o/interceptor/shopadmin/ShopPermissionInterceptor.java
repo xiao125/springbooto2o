@@ -22,7 +22,8 @@ public class ShopPermissionInterceptor  extends HandlerInterceptorAdapter {
      * @throws Exception
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
 
         //从session中获取当前选择的店铺
         Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
