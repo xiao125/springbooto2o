@@ -11,6 +11,7 @@ import com.imooc.o2o.service.UserAwardMapService;
 import com.imooc.o2o.util.PageCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -54,6 +55,7 @@ public class UserAwardMapServiceImpl implements UserAwardMapService{
 
 
     @Override
+    @Transactional
     public UserAwardMapExecution addUserAwardMap(UserAwardMap userAwardMap) throws UserAwardMapOperationException {
         //空值判断，主要确定userId和shopId不为空
         if (userAwardMap !=null && userAwardMap.getUser() !=null && userAwardMap.getUser().getUserId() !=null

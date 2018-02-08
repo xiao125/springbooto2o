@@ -114,7 +114,7 @@ $(function () {
                 data.areaList.map(function (item,index) {
 
                     tempAreaHtml +='<option data-id="' +item.areaId + '">' + item.areaName + '</option>';
-                })
+                });
 
                 $('#shop-category').html(tempHtml); //商铺分类
                 $('#area').html(tempAreaHtml);  //区域分类

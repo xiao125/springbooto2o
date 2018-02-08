@@ -24,7 +24,6 @@ public class UserShopManagementController {
     @Autowired
     private UserShopMapService userShopMapService;
 
-
     /**
      * 获取某个店铺的用户积分信息
      * @param request

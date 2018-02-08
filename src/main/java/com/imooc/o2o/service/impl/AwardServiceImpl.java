@@ -84,6 +84,10 @@ public class AwardServiceImpl implements AwardService {
         }
     }
 
+
+    //1.若缩略图参数有值，则处理缩略图
+    //若原先存在缩略图则先删除再添加新图，之后获取缩略图相对路径并赋值给award
+    // 2.更新tb_award的信息
     @Override
     @Transactional
     public AwardExecution modifyAward(Award award, ImageHolder thumbnail) {

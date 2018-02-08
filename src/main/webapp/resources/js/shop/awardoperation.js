@@ -13,8 +13,7 @@ $(function () {
         getInfo(awardId);
         isEdit = true;
     }else {
-
-
+        awardPostUrl='/o2oMaven/shopadmin/addaward';
     }
 
 
@@ -24,12 +23,67 @@ $(function () {
 
         $.getJSON(infoUrl,function (data) {
             if(data.success){
-                //
+                // 从返回的JSON当中获取award对象的信息，并赋值给表单
                 var award = data.award;
-
+                $('#award-name').val(award.awardName);
+                $('#priority').val(award.priority);
+                $('#award-desc').val(award.awardDesc);
+                $('#point').val(award.point);
             }
-        })
+        });
     }
+
+    //提交按钮的事件响应，分别对奖品添加和编辑操作做不同响应
+    $('#submit').click(function () {
+        // 创建奖品json对象，并从表单里面获取对应的属性值
+        var award = {};
+        award.awardName = $('#award-name').val();
+        award.priority = $('#priority').val();
+        award.awardDesc = $('#award-desc').val();
+        award.point = $('#point').val();
+        award.awardId = awardId ? awardId : '';
+        // 获取缩略图文件流
+        var thumbnail = $('#small-img')[0].files[0];
+        // 生成表单对象，用于接收参数并传递给后台
+        var formData = new FormData();
+        formData.append('thumbnail', thumbnail);
+        // 将award json对象转成字符流保存至表单对象key为awardStr的的键值对里
+        formData.append('awardStr', JSON.stringify(award));
+
+        //获取表单里输入的验证码
+        var verifyCodeActual = $('#j_captcha').val();
+        if(!verifyCodeActual){
+            $.toast('请输入验证码！');
+            return;
+        }
+
+        formData.append("verifyCodeActual",verifyCodeActual);
+        //将数据提交至后台处理相关操作
+        $.ajax({
+
+            url : awardPostUrl,
+            type : 'POST',
+            data : formData,
+            contentType : false,
+            processData : false,
+            cache : false,
+            success : function (data) {
+                if(data.success){
+                    $.toast('提交成功！');
+                    $('#captcha_img').click();
+                }
+                else {
+                    $.toast('提交失败！');
+                    $('#captcha_img').click();
+
+                }
+            }
+
+
+        });
+
+
+    });
 
 
 });

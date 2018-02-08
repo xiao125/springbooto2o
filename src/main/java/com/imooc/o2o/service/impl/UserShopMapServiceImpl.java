@@ -27,7 +27,7 @@ public class UserShopMapServiceImpl implements UserShopMapService {
             //页转行
             int beginIndex = PageCalculator.calculateRowIndex(pageIndex,pageSize);
             //
-            List<UserShopMap> userShopMapList = userShopMapDao.queryUserShopMapList(userShopMapCondition,pageIndex,
+            List<UserShopMap> userShopMapList = userShopMapDao.queryUserShopMapList(userShopMapCondition,beginIndex,
                     pageSize);
             //返回总数
             int count = userShopMapDao.queryUserShopMapCount(userShopMapCondition);
@@ -35,12 +35,9 @@ public class UserShopMapServiceImpl implements UserShopMapService {
             UserShopMapExecution ue = new UserShopMapExecution();
             ue.setUserShopMapList(userShopMapList);
             ue.setCount(count);
-
             return ue;
         }else {
-
             return null;
-
         }
     }
 

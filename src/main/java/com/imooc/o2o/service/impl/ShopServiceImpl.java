@@ -14,6 +14,7 @@ import com.imooc.o2o.util.PageCalculator;
 import com.imooc.o2o.util.PathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -63,6 +64,7 @@ public class ShopServiceImpl implements ShopService{
      */
 
     @Override
+    @Transactional
     public ShopExecution addShop(Shop shop, ImageHolder thumbnail) throws ShopOperationException {
 
         // 空值判断
@@ -77,7 +79,8 @@ public class ShopServiceImpl implements ShopService{
             shop.setCreateTime(new Date());
             shop.setLastEditTime(new Date());
 
-          int effectedNum = shopDao.insertShop(shop); //添加新店铺
+            //添加店铺信息
+          int effectedNum = shopDao.insertShop(shop);
           if (effectedNum <=0){
 
               throw new ShopOperationException("店铺创建失败");
@@ -90,7 +93,6 @@ public class ShopServiceImpl implements ShopService{
                       addShopImg(shop,thumbnail);
 
                   }catch (Exception e){
-
                       //使用RuntimeException 数据库可以事务回滚
                       throw new ShopOperationException("addShopImg error:" + e.getMessage());
                   }
@@ -129,16 +131,14 @@ public class ShopServiceImpl implements ShopService{
     }
 
     @Override
+    @Transactional
     public ShopExecution modifyShop(Shop shop, ImageHolder thumbnail) throws ShopOperationException {
 
         if (shop ==null || shop.getShopId() == null){
-
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
-
         }else {
 
             // 1.判断是否需要处理图片
-
             try {
                 if (thumbnail.getImage() !=null && thumbnail.getImageName() !=null
                         && !"".equals(thumbnail.getImageName())){
@@ -160,11 +160,8 @@ public class ShopServiceImpl implements ShopService{
                 }else {
                     shop = shopDao.queryByShopId(shop.getShopId()); //通过shop id 查询店铺
                     return  new ShopExecution(ShopStateEnum.SUCCESS,shop);
-
                 }
-
             }catch (Exception e){
-
                 throw new ShopOperationException("modifyShop error:" +e.getMessage());
             }
         }
