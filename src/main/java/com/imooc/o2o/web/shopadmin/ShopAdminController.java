@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * 主要用来解析路由并转发到相应的html中
  *
- * @author xiangze
+ * @author
  *
  */
 public class ShopAdminController {

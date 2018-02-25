@@ -36,7 +36,8 @@ public class UserAwardMapServiceImpl implements UserAwardMapService{
             int beginIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
 
             // 根据查询条件分页返回用户与奖品的映射信息列表(用户领取奖品的信息列表)
-            List<UserAwardMap> userAwardMapList = userAwardMapDao.queryUserAwardMapList(userAwardCondition,beginIndex,pageSize);
+            List<UserAwardMap> userAwardMapList = userAwardMapDao.queryUserAwardMapList(userAwardCondition,beginIndex,
+                    pageSize);
             //返回总数
             int count = userAwardMapDao.queryUserAwardMapCount(userAwardCondition);
             UserAwardMapExecution ue = new UserAwardMapExecution();
@@ -60,7 +61,7 @@ public class UserAwardMapServiceImpl implements UserAwardMapService{
         //空值判断，主要确定userId和shopId不为空
         if (userAwardMap !=null && userAwardMap.getUser() !=null && userAwardMap.getUser().getUserId() !=null
                 && userAwardMap.getShop() !=null && userAwardMap.getShop().getShopId() !=null) {
-                    //设置默认值
+            //设置默认值
             userAwardMap.setCreateTime(new Date());
             userAwardMap.setUsedStatus(0);
             try {
@@ -71,10 +72,10 @@ public class UserAwardMapServiceImpl implements UserAwardMapService{
                     // 根据用户Id和店铺Id获取该用户在店铺的积分
                     UserShopMap userShopMap = userShopMapDao.queryUserShopMap(userAwardMap.getUser().getUserId(),
                             userAwardMap.getShop().getShopId());
-                    //判断该用户在店铺里面是否积分
+                    //判断该用户在店铺里面是否用积分
                     if(userShopMap !=null){
                         // 若有积分，必须确保店铺积分大于本次要兑换奖品需要的积分
-                        if(userShopMap.getPoint() >=userAwardMap.getPoint()){
+                        if(userShopMap.getPoint() >= userAwardMap.getPoint()){
 
                             //积分抵扣
                             userShopMap.setPoint(userShopMap.getPoint() - userAwardMap.getPoint());
@@ -111,10 +112,11 @@ public class UserAwardMapServiceImpl implements UserAwardMapService{
     }
 
     @Override
+    @Transactional
     public UserAwardMapExecution modifyUserAwardMap(UserAwardMap userAwardMap) throws UserAwardMapOperationException {
 
         // 空值判断，主要是检查传入的userAwardId以及领取状态是否为空
-        if (userAwardMap ==null || userAwardMap.getUserAwardId() ==null || userAwardMap.getUsedStatus() == null){
+        if (userAwardMap == null || userAwardMap.getUserAwardId() == null || userAwardMap.getUsedStatus() == null){
             return new UserAwardMapExecution(UserAwardMapStateEnum.NULL_USERAWARD_ID);
         }else {
 

@@ -36,6 +36,12 @@ public class MyAwardController {
     @Autowired
     private PersonInfoService personInfoService;
 
+
+    /**
+     * 根据顾客奖品映射Id获取单条顾客奖品的映射信息
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/getawardbyuserawardid",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getAwardbyId(HttpServletRequest request){
@@ -45,13 +51,13 @@ public class MyAwardController {
         long userAwardId = HttpServletRequestUtil.getLong(request,"userAwardId");
         //空值判断
         if (userAwardId >-1){
-            //
+            // 根据Id获取顾客奖品的映射信息，进而获取奖品Id
             UserAwardMap userAwardMap = userAwardMapService.getUserAwardMapById(userAwardId);
             //根据奖品Id获取奖品信息
             Award award = awardService.getAwardById(userAwardMap.getAward().getAwardId());
             //奖品信息和领取状态返回给前端
             modelMap.put("award",award);
-            modelMap.put("usedStatus",userAwardMap.getUsedStatus());
+            modelMap.put("usedStatus",userAwardMap.getUsedStatus()); //兑换状态
             modelMap.put("userAwardMap",userAwardMap);
             modelMap.put("success",true);
         }else {

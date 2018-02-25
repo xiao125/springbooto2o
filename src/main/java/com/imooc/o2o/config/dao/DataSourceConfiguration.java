@@ -34,6 +34,7 @@ public class DataSourceConfiguration {
     private String jdbcPassword;
 
 
+
     /**
      * 生成与spring-dao.xml对应的bean dataSource
      * @return

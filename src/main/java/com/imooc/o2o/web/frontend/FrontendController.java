@@ -66,5 +66,47 @@ public class FrontendController {
     }
 
 
+    /**
+     * 奖品兑换列表页路由
+     * @return
+     */
+    @RequestMapping(value = "/pointrecord",method = RequestMethod.GET)
+    private String showPointRecord(){
+
+        return "frontend/pointrecord";
+    }
+
+
+    /**
+     * 奖品详情页路由
+     * @return
+     */
+    @RequestMapping(value = "/myawarddetail",method = RequestMethod.GET)
+    private String showMyAwardDetail(){
+
+        return "frontend/myawarddetail";
+    }
+
+    /**
+     * 消费记录列表页路由
+     * @return
+     */
+    @RequestMapping(value = "/myrecord",method = RequestMethod.GET)
+    private String showMyRecord(){
+
+        return "frontend/myrecord";
+    }
+
+
+    /**
+     * 用户各店铺积分信息也路由
+     * @return
+     */
+    @RequestMapping(value = "/mypoint",method = RequestMethod.GET)
+    private String showMyPoint(){
+        return "frontend/mypoint";
+
+    }
+
 
 }

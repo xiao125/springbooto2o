@@ -100,7 +100,8 @@ public class UserAwardManagementController {
             //设置上用户的session
             request.getSession().setAttribute("user",operator);
             // 解析微信回传过来的自定义参数state,由于之前进行了编码，这里需要解码一下
-            String qrCodeinfo = new String(URLDecoder.decode(HttpServletRequestUtil.getString(request,"state"),"UTF-8"));
+            String qrCodeinfo = new String(URLDecoder.decode(HttpServletRequestUtil.getString(request,"state"),
+                    "UTF-8"));
             ObjectMapper mapper = new ObjectMapper();
             WechatInfo wechatInfo = null;
             try{

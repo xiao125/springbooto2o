@@ -13,7 +13,9 @@ import com.imooc.o2o.service.UserProductMapService;
 import com.imooc.o2o.util.PageCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class UserProductMapServiceImpl implements UserProductMapService {
             int beginIndex = PageCalculator.calculateRowIndex(pageIndex,pageSize);
             //依据查询条件分页取出列表
             List<UserProductMap> userProductMapList = userProductMapDao.queryUserProductMapList(userProductCondition,
-                    pageIndex,pageSize);
+                    beginIndex,pageSize);
             //按照同等的查询条件获取总数
             int count = userProductMapDao.queryUserProductMapCount(userProductCondition);
             UserProductMapExecution se = new UserProductMapExecution();
@@ -58,7 +60,9 @@ public class UserProductMapServiceImpl implements UserProductMapService {
      * @throws UserProductMapOperationException
      */
     @Override
-    public UserProductMapExecution addUserProductMap(UserProductMap userProductMap) throws UserProductMapOperationException {
+    @Transactional
+    public UserProductMapExecution addUserProductMap(UserProductMap userProductMap)
+            throws UserProductMapOperationException {
 
         //空值判断，主要确保顾客Id，店铺Id以及操作员Id非空
         if (userProductMap != null && userProductMap.getUser().getUserId() != null
@@ -67,7 +71,7 @@ public class UserProductMapServiceImpl implements UserProductMapService {
             //设定默认值
             userProductMap.setCreateTime(new Date());
             try {
-                //添加消费记录
+                //添加一条用户购买商品的记录
                 int effectedNum = userProductMapDao.insertUserProductMap(userProductMap);
                 if (effectedNum <= 0) {
                     throw new UserProductMapOperationException("添加消费记录失败");
@@ -90,6 +94,7 @@ public class UserProductMapServiceImpl implements UserProductMapService {
                         // 在店铺没有过消费记录，添加一条店铺积分信息(就跟初始化会员一样)
                         userShopMap = compactUserShopMap4Add(userProductMap.getUser().getUserId(),
                                 userProductMap.getShop().getShopId(), userProductMap.getPoint());
+                        //添加一条用户店铺的积分记录
                         effectedNum = userShopMapDao.insertUserShopMap(userShopMap);
                         if (effectedNum <= 0) {
                             throw new UserProductMapOperationException("积分信息创建失败");
